@@ -5,7 +5,8 @@
 <br />
 
 <% if user_signed_in? %>
-    I see that you are signed in. Let's <%= link_to "do some work", "/backstage" %>
-<% else %>
+    I see that you are signed in. Let's <%= link_to "do some work", "/backstage" %><br />
     Time to go?  <%= link_to 'Sign out', destroy_user_session_path, :method => :delete %>
+<% else %>
+    Let's <%= link_to "do some work", "/backstage" %>
 <% end %>
