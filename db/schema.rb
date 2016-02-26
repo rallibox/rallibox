@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160225173740) do
+ActiveRecord::Schema.define(version: 20160226024422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,36 @@ ActiveRecord::Schema.define(version: 20160225173740) do
   add_index "invitations", ["invitable_type"], name: "index_invitations_on_invitable_type", using: :btree
   add_index "invitations", ["user_id"], name: "index_invitations_on_user_id", using: :btree
 
+  create_table "products", force: :cascade do |t|
+    t.string   "name"
+    t.string   "sku"
+    t.string   "permalink"
+    t.text     "description"
+    t.text     "short_description"
+    t.boolean  "active",                                    default: true
+    t.decimal  "weight",            precision: 8, scale: 3, default: 0.0
+    t.decimal  "price",             precision: 8, scale: 3, default: 0.0
+    t.decimal  "cost_price",        precision: 8, scale: 3, default: 0.0
+    t.integer  "tax_rate_id"
+    t.boolean  "featured",                                  default: false
+    t.text     "in_the_box"
+    t.boolean  "stock_control",                             default: true
+    t.boolean  "default",                                   default: false
+    t.datetime "created_at",                                                null: false
+    t.datetime "updated_at",                                                null: false
+  end
+
+  add_index "products", ["tax_rate_id"], name: "index_products_on_tax_rate_id", using: :btree
+
+  create_table "tax_rates", force: :cascade do |t|
+    t.string   "name"
+    t.decimal  "rate",         precision: 8, scale: 2
+    t.text     "country_ids"
+    t.string   "address_type"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -51,4 +81,5 @@ ActiveRecord::Schema.define(version: 20160225173740) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "products", "tax_rates"
 end
