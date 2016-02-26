@@ -26,7 +26,7 @@ class Ability
       can :manage, :all
     end
 
-    if user && user.is_sale_rep?
+    if user && user.is_sales_rep?
       can :access, :rails_admin # needed to access RailsAdmin
       can :dashboard              # grant access to the dashboard
       # can :read, [Calendar, User]
