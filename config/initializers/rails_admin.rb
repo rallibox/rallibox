@@ -31,4 +31,23 @@ RailsAdmin.config do |config|
     # history_index
     # history_show
   end
+  
+  config.model 'User' do
+    visible do
+      # controller bindings is available here. Example:
+      bindings[:controller].current_user.is_admin? == true
+    end
+  end
+  config.model 'TaxRate' do
+    visible do
+      # controller bindings is available here. Example:
+      bindings[:controller].current_user.is_admin? == true
+    end
+  end
+  config.model 'Invitation' do
+    visible do
+      # controller bindings is available here. Example:
+      bindings[:controller].current_user.is_admin? == true
+    end
+  end
 end
