@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160227043828) do
+ActiveRecord::Schema.define(version: 20160305040045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "accounts", force: :cascade do |t|
+    t.string   "subdomain"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "account_id"
+  end
+
+  add_index "accounts", ["account_id"], name: "index_accounts_on_account_id", using: :btree
+  add_index "accounts", ["user_id"], name: "index_accounts_on_user_id", using: :btree
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "customer_id"
@@ -126,6 +137,16 @@ ActiveRecord::Schema.define(version: 20160227043828) do
 
   add_index "orders", ["addressable_type", "addressable_id"], name: "index_orders_on_addressable_type_and_addressable_id", using: :btree
 
+  create_table "posts", force: :cascade do |t|
+    t.string   "title"
+    t.string   "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "account_id"
+  end
+
+  add_index "posts", ["account_id"], name: "index_posts_on_account_id", using: :btree
+
   create_table "products", force: :cascade do |t|
     t.string   "name"
     t.string   "sku"
@@ -143,8 +164,10 @@ ActiveRecord::Schema.define(version: 20160227043828) do
     t.boolean  "default",                                   default: false
     t.datetime "created_at",                                                null: false
     t.datetime "updated_at",                                                null: false
+    t.integer  "account_id"
   end
 
+  add_index "products", ["account_id"], name: "index_products_on_account_id", using: :btree
   add_index "products", ["tax_rate_id"], name: "index_products_on_tax_rate_id", using: :btree
 
   create_table "tax_rates", force: :cascade do |t|
@@ -176,7 +199,29 @@ ActiveRecord::Schema.define(version: 20160227043828) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "views", force: :cascade do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "views", ["email"], name: "index_views_on_email", unique: true, using: :btree
+  add_index "views", ["reset_password_token"], name: "index_views_on_reset_password_token", unique: true, using: :btree
+
+  add_foreign_key "accounts", "accounts"
+  add_foreign_key "accounts", "users"
   add_foreign_key "addresses", "customers"
   add_foreign_key "order_items", "orders"
+  add_foreign_key "posts", "accounts"
+  add_foreign_key "products", "accounts"
   add_foreign_key "products", "tax_rates"
 end
