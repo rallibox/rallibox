@@ -31,7 +31,6 @@ class Ability
       can :dashboard              # grant access to the dashboard
       # can :read, [Calendar, User]
       # can :manage, [Account, Address, Note, Service, Consultation]
-      can :read, :all
       can :manage, Product#, :hidden => false  # allow sales to only update visible products
       # can :update, Product, :hidden => false  # allow sales to only update visible products
 
