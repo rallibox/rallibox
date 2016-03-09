@@ -69,6 +69,8 @@ gem 'rails_admin', '~> 0.7.0'
 # https://github.com/the-refinery/invitational
 gem 'invitational'
 
+gem "nifty-key-value-store", require: "nifty/key_value_store"
+
 gem 'devise', '~> 3.5', '>= 3.5.6'
 gem 'cancancan'
 
